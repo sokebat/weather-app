@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Weather from "./Weather";
 import { getLocationInfo, getWeatherInfo } from "@/utils/fetch";
 import { fahrenheitToCelsius } from "@/utils/operation";
+import Loading from "../Loading";
 
 interface weatherInfoTypes {
   rain: number[] | null;
@@ -17,7 +18,7 @@ interface weatherInfoTypes {
 
 const ShowWeather = () => {
   // const displayText = useTypewriter({ text: "kathmandu", speed: 100 });
-  const displayText = "pokhara";
+  const displayText = "Pokhara";
 
   const [weatherInF, setweatherInF] = useState<weatherInfoTypes>({
     rain: null,
@@ -76,14 +77,10 @@ const ShowWeather = () => {
       <div className="  md:w-[700px] max-w-[700px]  mx-auto bg-slate-100 shadow-md hover:shadow-lg rounded-lg p-3 shadow-slate-200 ">
         <Tabs defaultValue="Fahrenheit" className="">
           <TabsContent value="Fahrenheit">
-            {weatherInF ? (
-              <Weather info={weatherInF} />
-            ) : (
-              <p className="">Loading weather...</p>
-            )}
+            {weatherInF.windSpeed ? <Weather info={weatherInF} /> : <Loading />}
           </TabsContent>
           <TabsContent value="Celsius">
-            {weatherInC && <Weather info={weatherInC} />}
+            {weatherInC.windSpeed ? <Weather info={weatherInC} /> : <Loading />}
           </TabsContent>
 
           <div className="flex items-center justify-center ">
