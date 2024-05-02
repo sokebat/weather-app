@@ -15,9 +15,10 @@ interface WeatherInfoTypes {
 export const getLocationInfo = async (city: string) => {
   try {
     const res = await fetch(
-      `https://api.geoapify.com/v1/geocode/search?text=${city}&format=json&apiKey=${
-        import.meta.env.VITE_GEO_LOCATION_API_KEY
-      }`
+      `https://api.geoapify.com/v1/geocode/search?text=${city}&format=json&apiKey=7f1d77244f184f97a0e5704a77164c01`
+      // `https://api.geoapify.com/v1/geocode/search?text=${city}&format=json&apiKey=${
+      //   import.meta.env.VITE_GEO_LOCATION_API_KEY
+      // }`
     );
 
     if (!res.ok) {
