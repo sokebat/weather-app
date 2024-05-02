@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Weather from "./Weather";
 import { getLocationInfo, getWeatherInfo } from "@/utils/fetch";
@@ -12,10 +12,12 @@ interface weatherInfoTypes {
   windSpeed: number[] | null;
   time: string[] | null;
   city: string;
+  isTemperatureInF: boolean;
 }
 
 const ShowWeather = () => {
-  const displayText = "Kathmandu";
+  // const displayText = useTypewriter({ text: "kathmandu", speed: 100 });
+  const displayText = "pokhara";
 
   const [weatherInF, setweatherInF] = useState<weatherInfoTypes>({
     rain: null,
@@ -25,6 +27,7 @@ const ShowWeather = () => {
     windSpeed: null,
     time: null,
     city: displayText,
+    isTemperatureInF: true,
   });
   const [weatherInC, setweatherInC] = useState<weatherInfoTypes>({
     rain: null,
@@ -34,6 +37,7 @@ const ShowWeather = () => {
     windSpeed: null,
     time: null,
     city: displayText,
+    isTemperatureInF: false,
   });
 
   useEffect(() => {
@@ -45,6 +49,7 @@ const ShowWeather = () => {
         setweatherInF({
           ...weatherInfo,
           city: displayText,
+          isTemperatureInF: false,
         });
 
         setweatherInC({
@@ -56,6 +61,7 @@ const ShowWeather = () => {
             Math.round(fahrenheitToCelsius(temp))
           ),
           city: displayText,
+          isTemperatureInF: false,
         });
       } catch (error) {
         console.error("Error fetching weather data:", error);
@@ -66,8 +72,8 @@ const ShowWeather = () => {
   }, []);
 
   return (
-    <div className=" h-[100vh]  flex flex-col gap-y-6 items-center justify-center border-2 border-green-100 ">
-      <div className=" w-[700px]  mx-auto bg-slate-100 shadow-md hover:shadow-lg rounded-lg p-3 shadow-slate-200 ">
+    <div className="min-h-[100vh]  flex flex-col gap-y-6 items-center justify-center border-2 border-green-100 px-2">
+      <div className="  md:w-[700px] max-w-[700px]  mx-auto bg-slate-100 shadow-md hover:shadow-lg rounded-lg p-3 shadow-slate-200 ">
         <Tabs defaultValue="Fahrenheit" className="">
           <TabsContent value="Fahrenheit">
             {weatherInF ? (
