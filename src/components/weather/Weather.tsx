@@ -5,6 +5,7 @@ import { RiUmbrellaFill } from "react-icons/ri";
 import { GiWaterDrop } from "react-icons/gi";
 import { IoCloudyNight } from "react-icons/io5";
 import { WiDaySunnyOvercast } from "react-icons/wi";
+import Typewriter from "typewriter-effect";
 
 import { createWeatherData, getWeatherCondition } from "@/utils/operation";
 
@@ -39,11 +40,20 @@ const Weather = ({ info }: WeatherInfo) => {
 
   return (
     <div className="  ">
-      <div className="text-xl sm:text-2xl text-center">
+      <div className="text-xl sm:text-2xl   ">
         {" "}
-        <p>
-          Right Now in {info.city}, its {weatherCondition}
-        </p>{" "}
+        <div className=" flex gap-1  items-center justify-center">
+          Right Now in{" "}
+          <Typewriter
+            options={{
+              strings: [info.city],
+              autoStart: true,
+              loop: false,
+              deleteSpeed: 50,
+            }}
+          />
+          , its {weatherCondition}
+        </div>{" "}
       </div>
       <div className=" flex flex-col sm:flex-row  justify-around gap-4 p-3  mt-3 ">
         <section className=" flex flex-col items-center justify-center">
@@ -68,27 +78,21 @@ const Weather = ({ info }: WeatherInfo) => {
           <div className=" flex gap-x-1 gap-y-3   items-center justify-center">
             <WiStrongWind size={30} />
 
-            <p>
-              <p className="text-sm sm:2xl font-semibold">
-                {info.windSpeed ? `${info.windSpeed[0]} mph` : ""}
-              </p>
+            <p className="text-sm sm:2xl font-semibold">
+              {info.windSpeed ? `${info.windSpeed[0]} mph` : ""}
             </p>
           </div>
           <div className=" flex gap-x-1 gap-y-3   items-center justify-center">
             <RiUmbrellaFill size={30} />
-            <p>
-              <p className="text-sm sm:2xl font-semibold">
-                {info.rain ? `${info.rain[0]} mm` : ""}
-              </p>
+
+            <p className="text-sm sm:2xl font-semibold">
+              {info.rain ? `${info.rain[0]} mm` : ""}
             </p>
           </div>
           <div className="flex gap-x-1 gap-y-3   items-center justify-center ">
-            <GiWaterDrop size={30} />
-            <p>
-              {" "}
-              <p className="text-sm sm:2xl font-semibold">
-                {info.snowfall ? `${info.snowfall[0]} %` : ""}
-              </p>
+            <GiWaterDrop size={30} />{" "}
+            <p className="text-sm sm:2xl font-semibold">
+              {info.snowfall ? `${info.snowfall[0]} %` : ""}
             </p>
           </div>
         </section>

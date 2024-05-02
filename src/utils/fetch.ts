@@ -41,7 +41,7 @@ export const getWeatherInfo = async (latitude: number, longitude: number) => {
 
     const response = await res.json();
     const data = response.daily;
-    console.log(response);
+    // console.log(response);
 
     return {
       rain: data.rain_sum,

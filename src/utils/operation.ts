@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 interface WeatherInfo {
   minTemp: number[] | null;
   maxTemp: number[] | null;
@@ -56,3 +57,28 @@ export function getWeatherCondition(
     return "Warm";
   }
 }
+
+
+
+
+
+interface TypeProps {
+  locations: string[];
+  speed: number;
+}
+
+export const useGetCity = ({ locations, speed }: TypeProps) => {
+  const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
+
+  useEffect(() => {
+    const typingInterval = setInterval(() => {
+      setCurrentLocationIndex((prevIndex) => (prevIndex + 1) % locations.length);
+    }, speed);
+
+    return () => {
+      clearInterval(typingInterval);
+    };
+  }, [locations, speed]);
+
+  return locations[currentLocationIndex];
+};

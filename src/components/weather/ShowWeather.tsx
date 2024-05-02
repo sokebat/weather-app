@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Weather from "./Weather";
 import { getLocationInfo, getWeatherInfo } from "@/utils/fetch";
-import { fahrenheitToCelsius } from "@/utils/operation";
+import { fahrenheitToCelsius, useGetCity } from "@/utils/operation";
 import Loading from "../Loading";
 
 interface weatherInfoTypes {
@@ -17,8 +17,8 @@ interface weatherInfoTypes {
 }
 
 const ShowWeather = () => {
-  // const displayText = useTypewriter({ text: "kathmandu", speed: 100 });
-  const displayText = "Pokhara";
+  const locations = ["Kathmandu", "Pokhara", "Butwal", "Hetuda", "Janakpur"];
+  const currentLocation = useGetCity({ locations, speed: 4000 });
 
   const [weatherInF, setweatherInF] = useState<weatherInfoTypes>({
     rain: null,
@@ -27,7 +27,7 @@ const ShowWeather = () => {
     snowfall: null,
     windSpeed: null,
     time: null,
-    city: displayText,
+    city: currentLocation,
     isTemperatureInF: true,
   });
   const [weatherInC, setweatherInC] = useState<weatherInfoTypes>({
@@ -37,19 +37,19 @@ const ShowWeather = () => {
     snowfall: null,
     windSpeed: null,
     time: null,
-    city: displayText,
+    city: currentLocation,
     isTemperatureInF: false,
   });
 
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const { latitude, longitude } = await getLocationInfo(displayText);
+        const { latitude, longitude } = await getLocationInfo(currentLocation);
         const weatherInfo = await getWeatherInfo(latitude, longitude);
 
         setweatherInF({
           ...weatherInfo,
-          city: displayText,
+          city: currentLocation,
           isTemperatureInF: false,
         });
 
@@ -61,7 +61,7 @@ const ShowWeather = () => {
           maxTemp: weatherInfo.maxTemp.map((temp: number) =>
             Math.round(fahrenheitToCelsius(temp))
           ),
-          city: displayText,
+          city: currentLocation,
           isTemperatureInF: false,
         });
       } catch (error) {
@@ -70,7 +70,7 @@ const ShowWeather = () => {
     };
 
     fetchWeatherData();
-  }, []);
+  }, [currentLocation]);
 
   return (
     <div className="min-h-[100vh]  flex flex-col gap-y-6 items-center justify-center border-2 border-green-100 px-2">
