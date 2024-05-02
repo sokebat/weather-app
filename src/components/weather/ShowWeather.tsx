@@ -1,77 +1,12 @@
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Weather from "./Weather";
-import { getLocationInfo, getWeatherInfo } from "@/utils/fetch";
-import { fahrenheitToCelsius, useGetCity } from "@/utils/operation";
+import { useWeatherInfo } from "@/utils/fetch";
+
 import Loading from "../Loading";
 
-interface weatherInfoTypes {
-  rain: number[] | null;
-  minTemp: number[] | null;
-  maxTemp: number[] | null;
-  snowfall: number[] | null;
-  windSpeed: number[] | null;
-  time: string[] | null;
-  city: string;
-  isTemperatureInF: boolean;
-}
-
 const ShowWeather = () => {
-  const locations = ["Kathmandu", "Pokhara", "Butwal", "Hetuda", "Janakpur"];
-  const currentLocation = useGetCity({ locations, speed: 4000 });
-
-  const [weatherInF, setweatherInF] = useState<weatherInfoTypes>({
-    rain: null,
-    minTemp: null,
-    maxTemp: null,
-    snowfall: null,
-    windSpeed: null,
-    time: null,
-    city: currentLocation,
-    isTemperatureInF: true,
-  });
-  const [weatherInC, setweatherInC] = useState<weatherInfoTypes>({
-    rain: null,
-    minTemp: null,
-    maxTemp: null,
-    snowfall: null,
-    windSpeed: null,
-    time: null,
-    city: currentLocation,
-    isTemperatureInF: false,
-  });
-
-  useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        const { latitude, longitude } = await getLocationInfo(currentLocation);
-        const weatherInfo = await getWeatherInfo(latitude, longitude);
-
-        setweatherInF({
-          ...weatherInfo,
-          city: currentLocation,
-          isTemperatureInF: false,
-        });
-
-        setweatherInC({
-          ...weatherInfo,
-          minTemp: weatherInfo.minTemp.map((temp: number) =>
-            Math.round(fahrenheitToCelsius(temp))
-          ),
-          maxTemp: weatherInfo.maxTemp.map((temp: number) =>
-            Math.round(fahrenheitToCelsius(temp))
-          ),
-          city: currentLocation,
-          isTemperatureInF: false,
-        });
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
-    };
-
-    fetchWeatherData();
-  }, [currentLocation]);
-
+  const weatherInfo = useWeatherInfo();
+  const { weatherInC, weatherInF } = weatherInfo;
   return (
     <div className="min-h-[100vh]  flex flex-col gap-y-6 items-center justify-center border-2 border-green-100 px-2">
       <div className="  md:w-[700px] max-w-[700px]  mx-auto bg-slate-100 shadow-md hover:shadow-lg rounded-lg p-3 shadow-slate-200 ">

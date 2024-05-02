@@ -44,14 +44,17 @@ const Weather = ({ info }: WeatherInfo) => {
         {" "}
         <div className=" flex gap-1  items-center justify-center">
           Right Now in{" "}
-          <Typewriter
-            options={{
-              strings: [info.city],
-              autoStart: true,
-              loop: false,
-              deleteSpeed: 50,
-            }}
-          />
+          <div className="font-bold">
+            {" "}
+            <Typewriter
+              options={{
+                strings: [info.city],
+                autoStart: true,
+                loop: false,
+                deleteSpeed: 50,
+              }}
+            />
+          </div>
           , its {weatherCondition}
         </div>{" "}
       </div>
