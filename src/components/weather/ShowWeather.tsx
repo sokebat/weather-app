@@ -3,13 +3,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Weather from "./Weather";
 import { getLocationInfo, getWeatherInfo } from "@/utils/fetch";
 import { fahrenheitToCelsius } from "@/utils/operation";
- 
+
 interface weatherInfoTypes {
-  rain: number | null;
-  minTemp: number | null;
-  maxTemp: number | null;
-  snowfall: number | null;
-  windSpeed: number | null;
+  rain: number[] | null;
+  minTemp: number[] | null;
+  maxTemp: number[] | null;
+  snowfall: number[] | null;
+  windSpeed: number[] | null;
+  time: string[] | null;
   city: string;
 }
 
@@ -22,14 +23,16 @@ const ShowWeather = () => {
     maxTemp: null,
     snowfall: null,
     windSpeed: null,
+    time: null,
     city: displayText,
   });
-  const [weatherInC, setweatherInC] =  useState<weatherInfoTypes>({
+  const [weatherInC, setweatherInC] = useState<weatherInfoTypes>({
     rain: null,
     minTemp: null,
     maxTemp: null,
     snowfall: null,
     windSpeed: null,
+    time: null,
     city: displayText,
   });
 
@@ -46,8 +49,12 @@ const ShowWeather = () => {
 
         setweatherInC({
           ...weatherInfo,
-          minTemp: Math.round(fahrenheitToCelsius(weatherInfo.minTemp)),
-          maxTemp: Math.round(fahrenheitToCelsius(weatherInfo.maxTemp)),
+          minTemp: weatherInfo.minTemp.map((temp: number) =>
+            Math.round(fahrenheitToCelsius(temp))
+          ),
+          maxTemp: weatherInfo.maxTemp.map((temp: number) =>
+            Math.round(fahrenheitToCelsius(temp))
+          ),
           city: displayText,
         });
       } catch (error) {
@@ -63,7 +70,11 @@ const ShowWeather = () => {
       <div className=" w-[700px]  mx-auto bg-slate-100 shadow-md hover:shadow-lg rounded-lg p-3 shadow-slate-200 ">
         <Tabs defaultValue="Fahrenheit" className="">
           <TabsContent value="Fahrenheit">
-            {weatherInF && <Weather info={weatherInF} />}
+            {weatherInF ? (
+              <Weather info={weatherInF} />
+            ) : (
+              <p className="">Loading weather...</p>
+            )}
           </TabsContent>
           <TabsContent value="Celsius">
             {weatherInC && <Weather info={weatherInC} />}

@@ -1,5 +1,3 @@
-import { Average } from "./operation";
-
 export const getLocationInfo = async (city: string) => {
   try {
     const res = await fetch(
@@ -43,14 +41,15 @@ export const getWeatherInfo = async (latitude: number, longitude: number) => {
 
     const response = await res.json();
     const data = response.daily;
-    console.log(response)
+    console.log(response);
 
     return {
-      rain: Average(data.rain_sum),
-      minTemp: Average(data.temperature_2m_min),
-      maxTemp: Average(data.temperature_2m_max),
-      snowfall: Average(data.snowfall_sum),
-      windSpeed: Average(data.wind_speed_10m_max),
+      rain: data.rain_sum,
+      minTemp: data.temperature_2m_min,
+      maxTemp: data.temperature_2m_max,
+      snowfall: data.snowfall_sum,
+      windSpeed: data.wind_speed_10m_max,
+      time:data.time
     };
   } catch (error) {
     console.error("Error fetching weather data:", error);
